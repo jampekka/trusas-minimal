@@ -1,14 +1,6 @@
 <template lang="pug">
 .viz-grid
 	.tile.double-width
-		v-subheader Ts
-		trusas-timeseries(:stream="remote.services.test.dataStream()",:api="api")
-</template>
-
-<!--
-	v-subheader Front video
-		video(id="front-video")
-	.tile.double-width
 		v-subheader Speed
 		trusas-timeseries(:stream="speed()" :labels="{'mSpeed': 'Speed'}")
 	.tile.double-width
@@ -20,7 +12,7 @@
 	.tile Stuff
 	.tile Stuff
 	.filler
-	</template> -->
+</template>
 
 <script lang="coffee">
 R = require 'lazyremote'
