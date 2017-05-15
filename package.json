@@ -10,15 +10,15 @@
   "author": "Jami Pekkanen <jami.pekkanen@gmail.com>",
   "license": "AGPL-3.0",
   "dependencies": {
-    "janus-cat": "github:jampekka/janus-cat",
-    "trusas-android": "github:jampekka/trusas-android",
-    "trusas-server": "github:jampekka/trusas-server",
-    "trusas0-pycore": "github:jampekka/trusas0-pycore",
+    "janus-cat": "git+https://github.com/jampekka/janus-cat.git",
+    "trusas-android": "git+https://github.com/jampekka/trusas-android.git",
+    "trusas-server": "git+https://github.com/jampekka/trusas-server.git",
+    "trusas0-pycore": "git+https://github.com/jampekka/trusas0-pycore.git",
     "vue": "^2.2.6"
   },
   "devDependencies": {
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-    "coffee-loader": "github:jampekka/coffee-loader",
+    "coffee-loader": "git+https://github.com/jampekka/coffee-loader.git",
     "coffeescript": "^2.0.0-beta1",
     "css-loader": "^0.28.0",
     "pug": "^2.0.0-beta.12",
