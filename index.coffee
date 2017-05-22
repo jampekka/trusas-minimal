@@ -1,6 +1,8 @@
 trusas = require 'trusas-server'
 Path = require 'path'
 subprocess = require 'child_process'
+Readline = require 'readline'
+Most = require 'most'
 
 spec =
 	label: "Car"
@@ -22,6 +24,13 @@ spec =
 				'-a', 'alsa_input.usb-046d_HD_Pro_Webcam_C920_8C12D2EF-02.analog-stereo'
 			]
 			outfile: "${basepath}.ts"
+		ibeo:
+			label: "Laser scanner"
+			command: [
+				require.resolve('trusas-ibeo/idc_recorder'),
+				"10.152.36.100"
+			]
+			outfile: "${basepath}.idc"
 trusas.serve
 	spec: spec
 	directory: "./test_sessions"
@@ -41,6 +50,17 @@ trusas.serve
 				return if isPending
 				isPending = true
 				f(v).then clearPending, clearPending
+
+		api.ibeo_stream = (session, callback) ->
+			fpath = session.services.ibeo.outfile
+			to_obj = require.resolve('trusas-ibeo/objects_to_json')
+			cmd = "tail -F #{fpath} | #{to_obj}"
+			proc = subprocess.spawn cmd, [],
+				shell: true
+			lines = Readline.createInterface input: proc.stdout, terminal: false
+			msgs = Most.fromEvent("line", lines).map (line) ->
+				JSON.parse line
+			msgs.forEach api.forEachNotPending callback
 		return api
 				
 			

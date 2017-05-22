@@ -9,6 +9,9 @@
 	.tile.double-width
 		v-subheader Acceleration
 		trusas-timeseries(:stream="accelerations()" :labels="{0: 'x', 1: 'y', 2: 'z'}",:api="api")
+	.tile.double
+		v-subheader Laser scanner
+		trusas-laserview(:stream="objects")
 	.tile Stuff
 	.tile Stuff
 	.filler
@@ -61,5 +64,8 @@ module.exports =
 			.throttle(100)
 			.map R.purejs (m) ->
 				[m[0], m[1].values]
+
+		objects: (f) ->
+			R.resolve @api.ibeo_stream @remote, f
 
 </script>

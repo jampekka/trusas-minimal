@@ -5,5 +5,6 @@ do ->
 	Vue = baseapp.Vue
 	app = await baseapp()
 	Vue.component 'trusas-visualizations', require('./ui.vue')
+	Vue.component 'trusas-laserview', require './laserview.vue'
 	app = new Vue app
 	app.$mount "#container"
