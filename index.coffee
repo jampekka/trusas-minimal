@@ -13,9 +13,9 @@ spec =
 		location:
 			label: "Location"
 			command: require.resolve 'trusas-android/location.py'
-		test:
-			label: "Test"
-			command: require.resolve 'trusas0-pycore/timestamper.py'
+		#test:
+		#	label: "Test"
+		#	command: require.resolve 'trusas0-pycore/timestamper.py'
 		front_video:
 			label: "Front video"
 			command: [
@@ -50,6 +50,10 @@ trusas.serve
 				return if isPending
 				isPending = true
 				f(v).then clearPending, clearPending
+
+		api.video_preview = (path) ->
+			subprocess.spawn require.resolve('trusas-gstreamer/live_view.sh'), [path]
+			return
 
 		api.ibeo_stream = (session, callback) ->
 			fpath = session.services.ibeo.outfile

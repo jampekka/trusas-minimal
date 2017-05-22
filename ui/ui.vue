@@ -28,10 +28,11 @@ module.exports =
 		api: required: true
 	
 	mounted: ->
-		vm = document.querySelector "#front-video"
-		frontvid = await R.resolve @remote.services.front_video.outfile
+		#vm = document.querySelector "#front-video"
+		#frontvid = await R.resolve @remote.services.front_video.outfile
 		#R.resolve @api.janus_stream frontvid
 		#vm.srcObject = await JanusCat.stream_from_janus "ws://localhost:8188", frontvid
+		R.resolve @api.video_preview @remote.services.front_video.outfile
 
 	methods:
 		speed: ->
