@@ -13,6 +13,7 @@
     "janus-cat": "git+https://github.com/jampekka/janus-cat.git",
     "three": "^0.85.2",
     "trusas-android": "git+https://github.com/jampekka/trusas-android.git",
+    "trusas-gstreamer": "github:jampekka/trusas-gstreamer",
     "trusas-ibeo": "github:jampekka/trusas-ibeo",
     "trusas-server": "git+https://github.com/jampekka/trusas-server.git",
     "trusas0-pycore": "git+https://github.com/jampekka/trusas0-pycore.git",
