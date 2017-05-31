@@ -1,15 +1,17 @@
 <template lang="pug">
 .viz-grid
 	.tile.double-width
+		trusas-protocol(:remote="remote", :api="api")
+	.tile.double-width
 		v-subheader Speed
 		trusas-timeseries(:stream="speed()" :labels="{'mSpeed': 'Speed'}",:api="api")
-	.tile.double-width
-		v-subheader Rotation rate
-		trusas-timeseries(:stream="rotation_speeds()" :labels="{0: 'x', 1: 'y', 2: 'z'}",:api="api")
+	//.tile.double-width
+	//	v-subheader Rotation rate
+	//	trusas-timeseries(:stream="rotation_speeds()" :labels="{0: 'x', 1: 'y', 2: 'z'}",:api="api")
 	.tile.double-width
 		v-subheader Acceleration
 		trusas-timeseries(:stream="accelerations()" :labels="{0: 'x', 1: 'y', 2: 'z'}",:api="api")
-	.tile.double
+	.tile.double-width
 		v-subheader Laser scanner
 		trusas-laserview(:stream="objects")
 	.tile Stuff

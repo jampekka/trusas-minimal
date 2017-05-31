@@ -3,6 +3,7 @@ Path = require 'path'
 subprocess = require 'child_process'
 Readline = require 'readline'
 Most = require 'most'
+unix = require 'unix-dgram'
 
 spec =
 	label: "Car"
@@ -31,6 +32,20 @@ spec =
 				"10.152.36.100"
 			]
 			outfile: "${basepath}.idc"
+		blinder:
+			label: "Blinder"
+			command: [
+				require.resolve('./blinder/blinder.py'),
+				"-c", "${directory}/blinder.control"
+			]
+			outfile: "${directory}/blinder.jsons"
+		protocol:
+			label: "Protocol"
+			command: [
+				require.resolve("./protocol.py"),
+				"${directory}/blinder.control", "${directory}/blinder.jsons", "${directory}/protocol.control", "${basepath}.jsons"
+			]
+			outfile: "${basepath}.jsons"
 trusas.serve
 	spec: spec
 	directory: "./test_sessions"
@@ -42,6 +57,13 @@ trusas.serve
 				subprocess.spawn './janus-cat-tail.sh', [path],
 					stdio: ['inherit', 'inherit', 'inherit']
 				return
+
+		api.socket_command = (path, command) ->
+			buf = new Buffer JSON.stringify command
+			socket = unix.createSocket('unix_dgram')
+			socket.send buf, 0, buf.length, path
+			socket.close()
+
 
 		api.forEachNotPending = (f) ->
 			isPending = false
@@ -65,6 +87,8 @@ trusas.serve
 			msgs = Most.fromEvent("line", lines).map (line) ->
 				JSON.parse line
 			msgs.forEach api.forEachNotPending callback
+		api.unix
+
 		return api
 				
 			

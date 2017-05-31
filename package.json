@@ -17,6 +17,7 @@
     "trusas-ibeo": "github:jampekka/trusas-ibeo",
     "trusas-server": "git+https://github.com/jampekka/trusas-server.git",
     "trusas0-pycore": "git+https://github.com/jampekka/trusas0-pycore.git",
+    "unix-dgram": "^2.0.1",
     "vue": "^2.2.6"
   },
   "devDependencies": {

@@ -8,7 +8,11 @@ import json
 import time
 import queue
 from concurrent.futures import ThreadPoolExecutor
-
+import select
+import os
+import socket
+import uvloop
+asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 #BUTTON_DEV = 'BT-005'
 BUTTON_DEV = 'IMS-FM800-BK'
@@ -67,9 +71,31 @@ async def readlines(fileobj):
     # asyncio has really dropped the ball
     loop = asyncio.get_event_loop()
     executor = ThreadPoolExecutor()
-    while True:
-        yield (await loop.run_in_executor(executor, fileobj.readline)).strip()
 
+    while True:
+        line = (await loop.run_in_executor(executor, fileobj.readline))
+        if not line:
+            return
+        yield line.strip()
+
+async def socket_reader(path):
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+    try:
+        os.remove(path)
+    except OSError:
+        pass
+    sock.bind(path)
+    
+    queue = asyncio.Queue()
+    def enqueue():
+        c = sock.recv(4096)
+        queue.put_nowait(c)
+    asyncio.get_event_loop().add_reader(sock.fileno(), enqueue)
+    
+    while True:
+        yield (await queue.get()).decode('utf-8')
+
+    
 
 def write_output(**data):
     hdr = {'ts': time.time()}
@@ -97,15 +123,15 @@ async def drain(agen):
     async for _ in agen:
         pass
 
-async def control_mode(controller):
-    async for line in readlines(sys.stdin):
+async def control_mode(controller, cfile):
+    async for line in cfile:
         try:
             cmd = json.loads(line)
         except ValueError as e:
             write_log(exception=str(e), input=line)
             continue
         try:
-            set_mode = cmd[1]['set_mode']
+            mode = cmd[1]['set_mode']
             if mode == 'unblind':
                 controller.write(b'u'); controller.flush()
             if mode == 'blind':
@@ -115,9 +141,15 @@ async def control_mode(controller):
             if mode == 'lift':
                 controller.write(b'l'); controller.flush()
         except Exception as e:
-            write_log(exception=e, command=cmd)
+            write_log(exception=str(e), command=cmd)
 
-async def run():
+def commander(path=None):
+    if path is None:
+        return readlines(sys.stdin)
+    return socket_reader(path)
+
+async def run(control=None):
+    cmsgs = commander(control)
     controller = serial.Serial('/dev/ttyACM0')
     controller.baudrate = 9600
 
@@ -131,9 +163,12 @@ async def run():
     controller.write(b'c')
     controller.flush()
     
-    await asyncio.gather(drain(cin), control_blinder(controller), control_mode(controller))
+    await asyncio.gather(drain(cin), control_blinder(controller), control_mode(controller, cmsgs))
 
+def do_run(cpath=None):
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run(cpath))
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run())
+    import argh
+    argh.dispatch_command(do_run)

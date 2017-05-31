@@ -47,12 +47,14 @@ void handle_command(char command) {
 			break;
 		case 'c':
 			Serial.println("Control mode");
+			Serial.flush();
 			control_mode = true;
 			set_blind();
 			break;
 		case 'l':
 			if(control_mode) {
 				Serial.println("Lifting");
+				Serial.flush();
 				lift_blinder();
 			}
 			break;
