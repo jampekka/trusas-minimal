@@ -187,6 +187,8 @@ async def run(blinder_path, blinder_log, control_path, logfile):
     while True:
         await run_next_block()
         if current_block >= len(sequence): break
+    blinder("unblind")
+    output(message="Experiment done")
         
         
 
