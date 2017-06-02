@@ -8,6 +8,7 @@
 		//v-btn(@click.native="cmd('blind')") Blind
 		v-btn(@click.native="cmd('unblind')") Unblind
 		v-btn(@click.native="cmd('control')") Control
+		audio(src="bell.ogg" class="bell" style="display: none")
 </template>
 
 <style scoped>
@@ -25,10 +26,12 @@ module.exports =
 		@socketpath = (await R.resolve @remote.directory) + "/protocol.control"
 		status_el = @$el.querySelector ".status"
 		block_el = @$el.querySelector ".block"
+		audio_el = @$el.querySelector ".bell"
 		R.resolve @remote.services.protocol.dataStream('start').forEach (msg) ->
 			[hdr, msg] = msg
 			if 'message' of msg
 				status_el.innerHTML = msg.message
+				audio_el.play()
 			if 'block_init' of msg
 				block_el.innerHTML = "#{msg.block_type[0]} (#{msg.block_init})"
 

@@ -6,7 +6,7 @@ void setup()
 {
 	Serial.begin(9600);
 	pinMode(control_pin, OUTPUT);
-	set_blind();
+	set_unblind();
 	Serial.println("pong");
 	Serial.flush();
 

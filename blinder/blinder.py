@@ -132,16 +132,17 @@ async def control_mode(controller, cfile):
             continue
         try:
             mode = cmd[1]['set_mode']
-            if mode == 'unblind':
-                controller.write(b'u'); controller.flush()
-            if mode == 'blind':
-                controller.write(b'b'); controller.flush()
-            if mode == 'control':
-                controller.write(b'c'); controller.flush()
-            if mode == 'lift':
-                controller.write(b'l'); controller.flush()
         except Exception as e:
             write_log(exception=str(e), command=cmd)
+        if mode == 'unblind':
+             controller.write(b'u'); controller.flush()
+        if mode == 'blind':
+            controller.write(b'b'); controller.flush()
+        if mode == 'control':
+            controller.write(b'c'); controller.flush()
+        if mode == 'lift':
+            controller.write(b'l'); controller.flush()
+
 
 def commander(path=None):
     if path is None:
