@@ -105,7 +105,14 @@ async def run(blinder_path, blinder_log, control_path, logfile):
     def blinder(mode):
         bsock.sendto(encode(set_mode=mode), blinder_path)
     
-    blinder("unblind")
+    # Wait for the blinder process to start up. It's a hack.
+    for i in range(10):
+        try:
+            blinder("unblind")
+        except FileNotFoundError:
+            await asyncio.sleep(0.1)
+            continue
+        break
 
     current_block = -1
     sequence = [("intro", None)]
