@@ -49,7 +49,7 @@ spec =
 				"${directory}/blinder.control", "${directory}/blinder.jsons", "${directory}/protocol.control", "${basepath}.jsons"
 			]
 			outfile: "${basepath}.jsons"
-trusas.serve
+startup = trusas.serve
 	spec: spec
 	directory: "./test_sessions"
 	ui: Path.join __dirname, './ui'
@@ -95,4 +95,5 @@ trusas.serve
 		return api
 				
 			
-
+startup.then ->
+	console.log "Listening"
