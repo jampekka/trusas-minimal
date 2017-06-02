@@ -110,9 +110,14 @@ async def run(blinder_path, blinder_log, control_path, logfile):
     current_block = -1
     sequence = [("intro", None)]
     block_duration = 5*60.0 # TODO: Check this
-    n_blocks = 4
+    
+    training = [('blind', block_duration), ('unblind', block_duration)]
+    random.shuffle(trainin)
+
+    n_blocks = 3
     blocks = [('blind', block_duration)]*n_blocks + [('unblind', block_duration)]*n_blocks
     random.shuffle(blocks)
+    sequence += training
     sequence += blocks
     output(sequence=sequence)
 
