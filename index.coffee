@@ -5,6 +5,9 @@ Readline = require 'readline'
 Most = require 'most'
 unix = require 'unix-dgram'
 
+CAMERA_ID = "8C12D2EF"
+#CAMERA_ID = "CBFB41EF"
+
 spec =
 	label: "Car"
 	services:
@@ -21,8 +24,8 @@ spec =
 			label: "Front video"
 			command: [
 				require.resolve('trusas-gstreamer/record_h264.coffee'),
-				'-v', '/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_8C12D2EF-video-index0',
-				'-a', 'alsa_input.usb-046d_HD_Pro_Webcam_C920_8C12D2EF-02.analog-stereo'
+				'-v', "/dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_#{CAMERA_ID}-video-index0",
+				'-a', "alsa_input.usb-046d_HD_Pro_Webcam_C920_#{CAMERA_ID}-02.analog-stereo"
 			]
 			outfile: "${basepath}.ts"
 		ibeo:
