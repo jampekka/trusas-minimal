@@ -149,9 +149,17 @@ def commander(path=None):
         return readlines(sys.stdin)
     return socket_reader(path)
 
+import serial.tools.list_ports
+def find_arduino():
+    for port in serial.tools.list_ports.comports():
+        if "Arduino" in port.description:
+            return port.device
+    raise RuntimeError("No arduino found!")
+
 async def run(control=None):
     cmsgs = commander(control)
-    controller = serial.Serial('/dev/ttyACM0')
+    path = find_arduino()
+    controller = serial.Serial(path)
     controller.baudrate = 9600
 
     cin = logger(serial_lines(controller))
@@ -161,7 +169,7 @@ async def run(control=None):
     async for line in cin:
         if line.strip() == b'pong': break
     
-    controller.write(b'c')
+    controller.write(b'u')
     controller.flush()
     
     await asyncio.gather(drain(cin), control_blinder(controller), control_mode(controller, cmsgs))
