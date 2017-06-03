@@ -75,12 +75,21 @@ void serialEvent() {
 	}
 }
 
+unsigned int last_pong = 0;
+
 void loop()
 {
+	unsigned int time = millis();
 	if(control_mode && blind_at > 0) {
-		if(millis() > blind_at) {
+		if(time > blind_at) {
 			blind_at = 0;
 			set_blind();
 		}
+	}
+	
+	if(time - last_pong > 5000) {
+		Serial.println("pong");
+		Serial.flush();
+		last_pong = time;
 	}
 }
