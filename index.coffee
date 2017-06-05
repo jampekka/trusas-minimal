@@ -49,6 +49,9 @@ spec =
 				"${directory}/blinder.control", "${directory}/blinder.jsons", "${directory}/protocol.control", "${basepath}.jsons"
 			]
 			outfile: "${basepath}.jsons"
+		obd:
+			label: "OBD"
+			command: require.resolve('./obd_dump.py')
 startup = trusas.serve
 	spec: spec
 	directory: "./test_sessions"
