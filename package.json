@@ -1,5 +1,5 @@
 {
-  "name": "trusas-corolla",
+  "name": "trusas-minimal",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,9 @@
   "author": "Jami Pekkanen <jami.pekkanen@gmail.com>",
   "license": "AGPL-3.0",
   "dependencies": {
-    "janus-cat": "git+https://github.com/jampekka/janus-cat.git",
-    "three": "^0.85.2",
     "trusas-android": "git+https://github.com/jampekka/trusas-android.git",
-    "trusas-gstreamer": "github:jampekka/trusas-gstreamer",
-    "trusas-ibeo": "github:jampekka/trusas-ibeo",
     "trusas-server": "git+https://github.com/jampekka/trusas-server.git",
     "trusas0-pycore": "git+https://github.com/jampekka/trusas0-pycore.git",
-    "unix-dgram": "^2.0.1",
     "vue": "^2.2.6"
   },
   "devDependencies": {

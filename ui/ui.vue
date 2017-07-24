@@ -11,31 +11,18 @@
 	.tile.double-width
 		v-subheader Acceleration
 		trusas-timeseries(:stream="accelerations()" :labels="{0: 'x', 1: 'y', 2: 'z'}",:api="api")
-	.tile.double-width
-		v-subheader Laser scanner
-		trusas-laserview(:stream="objects")
-	.tile Stuff
-	.tile Stuff
 	.filler
 </template>
 
 <script lang="coffee">
 R = require 'lazyremote'
 _ = require 'lodash'
-JanusCat = require 'janus-cat'
 
 module.exports =
 	props:
 		remote: required: true
 		api: required: true
 	
-	mounted: ->
-		#vm = document.querySelector "#front-video"
-		#frontvid = await R.resolve @remote.services.front_video.outfile
-		#R.resolve @api.janus_stream frontvid
-		#vm.srcObject = await JanusCat.stream_from_janus "ws://localhost:8188", frontvid
-		R.resolve @api.video_preview @remote.services.front_video.outfile
-
 	methods:
 		speed: ->
 			@remote.services.location.dataStream()
@@ -67,8 +54,5 @@ module.exports =
 			.throttle(100)
 			.map R.purejs (m) ->
 				[m[0], m[1].values]
-
-		objects: (f) ->
-			R.resolve @api.ibeo_stream @remote, f
 
 </script>
