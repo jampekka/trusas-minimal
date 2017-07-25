@@ -3,7 +3,6 @@ Path = require 'path'
 subprocess = require 'child_process'
 Readline = require 'readline'
 Most = require 'most'
-unix = require 'unix-dgram'
 
 CAMERA_ID = "8C12D2EF"
 #CAMERA_ID = "CBFB41EF"
